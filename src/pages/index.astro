@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ImageCarousel from '../components/ImageCarousel'
+
+// Import all sections
+const heroContent = await import('../content/sections/hero.md');
+const aboutContent = await import('../content/sections/about.md');
+
+const hero = heroContent.frontmatter;
+const about = aboutContent.frontmatter;
+
+---
+
+<Layout title={hero.title}>
+
+	<section id="about" class="about-section reveal">
+		<section class="body-section about constrain">
+			<div class="about-copy">
+				<div class="about-text">
+					{about.overview.map(paragraph => (
+						<p class:list={[paragraph.emphasis && 'emphasis']}>
+							{paragraph.italic ? <em>{paragraph.text}</em> : paragraph.text}
+						</p>
+					))}
+				</div>
+			</div>
+
+			<div class="about-carousel-shell">
+				<ImageCarousel
+					client:load
+					images={about.images}
+					autoPlay={true}
+					interval={5000}
+				/>
+			</div>
+		</section>
+	</section>
+</Layout>
